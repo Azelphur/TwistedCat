@@ -1,0 +1,15 @@
+This is a simple little IRC bot I created in about 30 minutes using python and twisted 
+for use on my gaming communities server, it notifies us of available updates, servers
+going up/down, and other similar things I got the idea from last.fm's irccat, which is
+very similar. Except I didn't want all of the extra commands. I also like python and
+twisted, so I wrote it myself. :)
+
+The IRC protocol code came from here: http://eflorenzano.com/blog/2008/11/16/writing-markov-chain-irc-bot-twisted-and-python/
+
+Usage:
+Edit the lines in service.tac to point to your IRC server/channel
+Start the bot with twistd -y service.tac
+Send stuff to the bot using netcat. Example: echo "Hello, world!" | netcat localhost 1079
+
+Optional:
+Put irc in /usr/bin so you can pipe directly to irc rather than using netcat.
