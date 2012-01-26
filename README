@@ -1,6 +1,7 @@
 Usage:
-1) Edit config.cfg, remove any sections you don't want, Each section supports multiple
-accounts, meaning you can have the bot on multiple IRC networks, or multiple XMPP accounts.
+1) Edit config.cfg, remove any sections you don't want, Each section
+supports multiple accounts, meaning you can have the bot on multiple IRC
+networks, or multiple XMPP accounts.
 2) Start the bot with twistd -y twistedcat.tac
 3) Send stuff to the bot using netcat. Example:
 echo "Hello, world!" | netcat localhost 1079
