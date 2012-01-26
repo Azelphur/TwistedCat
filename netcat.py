@@ -14,7 +14,8 @@ class NetcatFactory(protocol.ServerFactory):
     protocol = NetcatProtocol
 
     def __init__(self, **kwargs):
-        self.xmpp = kwargs['irc']
+        self.connections = kwargs['factories']
 
     def message(self, message):
-        self.xmpp.sendmsg(message)
+	for connection in self.connections:
+		connection.msg(message)

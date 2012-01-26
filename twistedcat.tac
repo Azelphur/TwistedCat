@@ -15,7 +15,10 @@ if config.has_key('irc'):
 	for server in config['irc']:
 		f = IRCBotFactory(config['irc'][server])
 		factories.append(f)
-		internet.TCPClient(config['irc'][server]['server'], config['irc'][server]['port'], f).setServiceParent(service.IServiceCollection(application))
+		if config['irc'][server]['ssl']:
+			internet.SSLClient(config['irc'][server]['server'], config['irc'][server]['port'], f).setServiceParent(service.IServiceCollection(application))
+		else:
+			internet.TCPClient(config['irc'][server]['server'], config['irc'][server]['port'], f).setServiceParent(service.IServiceCollection(application))
 
 if config.has_key('xmpp'):
 	# XMPP Is enabled, so load the XMPP Handler
