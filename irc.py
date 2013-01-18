@@ -54,14 +54,13 @@ class IRCBot(irc.IRCClient):
 
         # Otherwise check to see if it is a message directed at me
         if msg.startswith(self.nickname + ":"):
-            msg = "%s: I am a log bot" % user
+            print "RECEIVED from %s on %s: %s" % (user, channel, msg)
+            msg = "%s: I am a bot. Send '%s?' for what little I know about the world." % (user, self.nickname)
             self.msg(channel, msg)
-            print "<%s> %s" % (self.nickname, msg)
         elif msg.startswith(self.nickname + "?"):
+            print "RECEIVED from %s on %s: %s" % (user, channel, msg)
             msg = self.factory.usage_msg
             self.msg(channel, msg)
-            print "<%s> %s" % (self.nickname, msg)
-
 
 class IRCBotFactory(protocol.ClientFactory):
     protocol = IRCBot
@@ -69,11 +68,10 @@ class IRCBotFactory(protocol.ClientFactory):
 
     def __init__(self, config, appinfo):
         self.appinfo = appinfo
-        global APP_VERSION
         self.config = config
         hostname = socket.gethostbyname(platform.uname()[1])
         username = getpass.getuser()
-        self.usage_msg = "%s\nrunning on %s as %s" % (appinfo, hostname, username)
+        self.usage_msg = "%s (running on %s (%s) as %s)" % (appinfo, hostname, platform.uname()[1], username)
 
     def clientConnectionLost(self, connector, reason):
         print "Lost connection (%s), reconnecting." % (reason,)
