@@ -1,5 +1,5 @@
 from twisted.application import service, internet
-from twisted.internet import reactor
+from twisted.internet import reactor, ssl
 import yaml
 
 config = yaml.load(open('config.cfg', 'r'))
@@ -16,7 +16,7 @@ if config.has_key('irc'):
 		f = IRCBotFactory(config['irc'][server])
 		factories.append(f)
 		if config['irc'][server]['ssl']:
-			internet.SSLClient(config['irc'][server]['server'], config['irc'][server]['port'], f).setServiceParent(service.IServiceCollection(application))
+			internet.SSLClient(config['irc'][server]['server'], config['irc'][server]['port'], f, ssl.ClientContextFactory()).setServiceParent(service.IServiceCollection(application))
 		else:
 			internet.TCPClient(config['irc'][server]['server'], config['irc'][server]['port'], f).setServiceParent(service.IServiceCollection(application))
 

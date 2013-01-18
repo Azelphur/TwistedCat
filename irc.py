@@ -1,5 +1,5 @@
 from twisted.words.protocols import irc
-from twisted.internet import protocol
+from twisted.internet import protocol, ssl
 
 class IRCBot(irc.IRCClient):
     def _get_nickname(self):
