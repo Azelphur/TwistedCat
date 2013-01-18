@@ -8,12 +8,15 @@ config = yaml.load(open('config.cfg', 'r'))
 application = service.Application("ircnetcat")
 factories = []
 
+APP_VERSION = "0.0.1"
+APP_INFO = "TwistedCat v%s by jason@jasonantman.com - <https://github.com/jantman/TwistedCat>" % APP_VERSION
+
 if config.has_key('irc'):
 	# IRC Is enabled, so load the IRC Handler
 	from irc import IRCBotFactory
 	# Connect to IRC
 	for server in config['irc']:
-		f = IRCBotFactory(config['irc'][server])
+		f = IRCBotFactory(config['irc'][server], APP_INFO)
 		factories.append(f)
 		if config['irc'][server]['ssl']:
 			internet.SSLClient(config['irc'][server]['server'], config['irc'][server]['port'], f, ssl.ClientContextFactory()).setServiceParent(service.IServiceCollection(application))
@@ -39,4 +42,5 @@ from netcat import NetcatProtocol, NetcatFactory
 
 # Listen for netcat connections
 factory = NetcatFactory(factories=factories)
+print "listening for netcat on port %d" % config['netcat']['port']
 internet.TCPServer(config['netcat']['port'], factory).setServiceParent(service.IServiceCollection(application))
