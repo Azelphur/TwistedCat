@@ -42,5 +42,5 @@ from netcat import NetcatProtocol, NetcatFactory
 
 # Listen for netcat connections
 factory = NetcatFactory(factories=factories)
-print "listening for netcat on port %d" % config['netcat']['port']
+print "listening for netcat on port %d" % (config['netcat']['port'],)
 internet.TCPServer(config['netcat']['port'], factory).setServiceParent(service.IServiceCollection(application))

@@ -44,7 +44,6 @@ class IRCBot(irc.IRCClient):
     """This will get called when the bot receives a message."""
     def privmsg(self, user, channel, msg):
         user = user.split('!', 1)[0]
-        print "<%s> %s" % (user, msg)
         
         # Check to see if they're sending me a private message
         if channel == self.nickname:
@@ -54,11 +53,11 @@ class IRCBot(irc.IRCClient):
 
         # Otherwise check to see if it is a message directed at me
         if msg.startswith(self.nickname + ":"):
-            print "RECEIVED from %s on %s: %s" % (user, channel, msg)
+            print "RECEIVED from %s on %s: %s" % (user, channel, msg,)
             msg = "%s: I am a bot. Send '%s?' for what little I know about the world." % (user, self.nickname)
             self.msg(channel, msg)
         elif msg.startswith(self.nickname + "?"):
-            print "RECEIVED from %s on %s: %s" % (user, channel, msg)
+            print "RECEIVED from %s on %s: %s" % (user, channel, msg,)
             msg = self.factory.usage_msg
             self.msg(channel, msg)
 

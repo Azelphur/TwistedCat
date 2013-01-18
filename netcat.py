@@ -8,7 +8,7 @@ class NetcatProtocol(LineReceiver):
 	# Netcat message recieved
         line = line.rstrip("\r") # Apparently some systems send \r\n, so we're being safe.
         sender = self.transport.getHost()
-        print "NetCat received line from %s:%s: '%s'" % (sender.host, sender.port, line)
+        print "NetCat received line from %s:%s: '%s'" % (sender.host, sender.port, line,)
         self.factory.message(line)
 
 class NetcatFactory(protocol.ServerFactory):
