@@ -1,0 +1,68 @@
+#!/bin/sh
+#
+#  Startup script for TwistedPrism chat notifier bot
+#
+#  chkconfig: - 85 15
+#  description: Start-up script for the Twisted service "twistedprism.tap".
+
+PATH=/usr/bin:/bin:/usr/sbin:/sbin
+
+pidfile=/var/run/twistedprism.pid
+rundir=/var/lib/twistedprism/
+file=/etc/twisted-taps/twistedprism.tac
+logfile=/var/log/twistedprism.log
+
+#  load init function library
+. /etc/init.d/functions
+
+[ -r /etc/default/twistedprism ] && . /etc/default/twistedprism
+[ -r /etc/sysconfig/twistedprism ] && . /etc/sysconfig/twistedprism
+
+#  check for required files
+if [ ! -x /usr/bin/twistd ]
+then
+	echo "$0: Aborting, no /usr/bin/twistd found"
+	exit 0
+fi
+if [ ! -r "$file" ]
+then
+	echo "$0: Aborting, no file $file found."
+	exit 0
+fi
+
+#  set up run directory if necessary
+if [ ! -d "${rundir}" ]
+then
+	mkdir -p "${rundir}"
+fi
+
+
+case "$1" in
+	start)
+		echo -n "Starting twistedprism: twistd"
+		daemon twistd  \
+				--pidfile=$pidfile \
+				--rundir=$rundir \
+				--file=$file \
+				--logfile=$logfile
+		status twistedprism
+		;;
+
+	stop)
+		echo -n "Stopping twistedprism: twistd"
+		kill `cat "${pidfile}"`
+		status twistedprism
+		;;
+
+	restart)
+		"${0}" stop
+		"${0}" start
+		;;
+
+    *)
+		echo "Usage: ${0} {start|stop|restart|}" >&2
+		exit 1
+		;;
+esac
+
+exit 0
