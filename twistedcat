@@ -1,3 +1,0 @@
-#!/bin/bash
-
-netcat localhost 1079 $@
