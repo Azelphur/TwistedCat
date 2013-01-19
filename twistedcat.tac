@@ -9,14 +9,15 @@ application = service.Application("ircnetcat")
 factories = []
 
 APP_VERSION = "0.0.1"
-APP_INFO = "TwistedCat v%s by jason@jasonantman.com - <https://github.com/jantman/TwistedCat>" % APP_VERSION
+APP_NAME = "TwistedPrism"
+APP_URL = "https://github.com/jantman/TwistedCat"
 
 if config.has_key('irc'):
 	# IRC Is enabled, so load the IRC Handler
 	from irc import IRCBotFactory
 	# Connect to IRC
 	for server in config['irc']:
-		f = IRCBotFactory(config['irc'][server], APP_INFO)
+		f = IRCBotFactory(config['irc'][server], APP_VERSION, APP_NAME, APP_URL)
 		factories.append(f)
 		if config['irc'][server]['ssl']:
 			internet.SSLClient(config['irc'][server]['server'], config['irc'][server]['port'], f, ssl.ClientContextFactory()).setServiceParent(service.IServiceCollection(application))
@@ -26,7 +27,7 @@ if config.has_key('irc'):
 if config.has_key('http'):
 	# HTTP Is enabled, so load the HTTP Handler
 	from http import HTTPServerFactory
-	f = HTTPServerFactory(config['http'], factories=factories)
+	f = HTTPServerFactory(config['http'], APP_VERSION, APP_NAME, APP_URL, factories=factories)
 	internet.TCPServer(config['http']['port'], f).setServiceParent(service.IServiceCollection(application))
 
 if config.has_key('xmpp'):

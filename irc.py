@@ -5,9 +5,18 @@ import platform, socket, getpass
 class IRCBot(irc.IRCClient):
     
     usage_message = None
-    versionName = "TwistedCat"
-    versionNum = "0.0.1"
-    sourceURL = "https://github.com/jantman/TwistedCat"
+
+    def _get_appname(self):
+        return self.factory.APP_NAME
+    versionName = property(_get_appname)
+
+    def _get_appversion(self):
+        return self.factory.APP_VERSION
+    versionNum = property(_get_appversion)
+
+    def _get_appurl(self):
+        return self.factory.APP_URL
+    sourceURL = property(_get_appurl)
 
     def _get_nickname(self):
         return self.factory.config['nick']
@@ -66,12 +75,14 @@ class IRCBotFactory(protocol.ClientFactory):
     protocol = IRCBot
     usage_msg = None
 
-    def __init__(self, config, appinfo):
-        self.appinfo = appinfo
+    def __init__(self, config, APP_VERSION, APP_NAME, APP_URL):
         self.config = config
+        self.APP_VERSION = APP_VERSION
+        self.APP_NAME = APP_NAME
+        self.APP_URL = APP_URL
         hostname = socket.gethostbyname(platform.uname()[1])
         username = getpass.getuser()
-        self.usage_msg = "%s (running on %s (%s) as %s)" % (appinfo, hostname, platform.uname()[1], username)
+        self.usage_msg = "%s v%s <%s> (running on %s (%s) as %s)" % (APP_NAME, APP_VERSION, APP_URL, hostname, platform.uname()[1], username)
 
     def clientConnectionLost(self, connector, reason):
         print "Lost connection (%s), reconnecting." % (reason,)

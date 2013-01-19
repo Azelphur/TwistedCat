@@ -8,7 +8,7 @@ class MyHttpRequest(http.Request):
         if self.method == "POST":
 	    print "POST from %s to %s: %s" % (self.getClientIP(), self.uri, self.args)
         # self.responseHeaders type is http_headers.Headers
-        # self.setHeader(name, value)
+        self.setHeader("Server", "%s v%s (%s)" % (self.channel.factory.APP_NAME, self.channel.factory.APP_VERSION, self.channel.factory.APP_URL))
         # self.getHeader(key) returns bytes or NoneType
         # self.getAllHeaders() - returns a dict of all response headers
         if self.path == "/notification/send":
@@ -31,8 +31,11 @@ class HTTPServerFactory(http.HTTPFactory):
     protocol = Channel
     _logDateTimeCall = None
 
-    def __init__(self, config, **kwargs):
+    def __init__(self, config, APP_VERSION, APP_NAME, APP_URL, **kwargs):
         self.config = config
+        self.APP_VERSION = APP_VERSION
+        self.APP_NAME = APP_NAME
+        self.APP_URL = APP_URL
         self.connections = kwargs['factories']
 
     def message(self, message):
