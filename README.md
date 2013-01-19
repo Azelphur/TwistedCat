@@ -61,10 +61,9 @@ Acknowledgements
 ----------------
 
 The code I began working on was a GitHub repo forked from that of Azelphur
-Gaming [TwistedCat](https://github.com/Azelphur/TwistedCat)
-
-The IRC protocol code came from here:
-http://eflorenzano.com/blog/2008/11/16/writing-markov-chain-irc-bot-twisted-and-python/
+Gaming [TwistedCat](https://github.com/Azelphur/TwistedCat). He in turn says
+that the IRC protocol class came from [Eric Florenzano's Blog
+post](http://eflorenzano.com/blog/2008/11/16/writing-markov-chain-irc-bot-twisted-and-python/).
 
 License
 -------
