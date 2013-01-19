@@ -23,6 +23,12 @@ if config.has_key('irc'):
 		else:
 			internet.TCPClient(config['irc'][server]['server'], config['irc'][server]['port'], f).setServiceParent(service.IServiceCollection(application))
 
+if config.has_key('http'):
+	# HTTP Is enabled, so load the HTTP Handler
+	from http import HTTPServerFactory
+	f = HTTPServerFactory(config['http'], factories=factories)
+	internet.TCPServer(config['http']['port'], f).setServiceParent(service.IServiceCollection(application))
+
 if config.has_key('xmpp'):
 	# XMPP Is enabled, so load the XMPP Handler
 	from xmpp import XMPPBot

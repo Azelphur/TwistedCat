@@ -5,6 +5,9 @@ import platform, socket, getpass
 class IRCBot(irc.IRCClient):
     
     usage_message = None
+    versionName = "TwistedCat"
+    versionNum = "0.0.1"
+    sourceURL = "https://github.com/jantman/TwistedCat"
 
     def _get_nickname(self):
         return self.factory.config['nick']
@@ -25,8 +28,6 @@ class IRCBot(irc.IRCClient):
     def _get_lineRate(self):
         return self.factory.config['lineRate']
     lineRate = property(_get_lineRate)
-
-    versionName = "TwistedCat"
 
     def signedOn(self):
     	for channel in self.factory.config['channels']:
