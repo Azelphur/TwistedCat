@@ -8,6 +8,7 @@ irc:
     realname: TwistedPrism
     pass: secret
     lineRate: 1
+    heartbeatInterval: 30
     channels:
       "#test":
         key: secret
