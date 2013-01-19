@@ -6,17 +6,20 @@ class MyHttpRequest(http.Request):
   
     def process(self):
         if self.method == "POST":
-	    print "POST args from %s at %s: %s" % (self.getClientIP(), self.uri, self.args)
+	    print "POST from %s to %s: %s" % (self.getClientIP(), self.uri, self.args)
         # self.responseHeaders type is http_headers.Headers
         # self.setHeader(name, value)
         # self.getHeader(key) returns bytes or NoneType
         # self.getAllHeaders() - returns a dict of all response headers
-	if "message" in self.args:
-	    self.channel.factory.message(self.args['message'][0])
-	    self.setResponseCode(202, message="Message passed to notifiers.")
-	    self.write("message passed to notifiers")
-	else:
-	    self.setResponseCode(400, message="message not specified")
+        if self.path == "/notification/send":
+            if "message" in self.args:
+                self.channel.factory.message(self.args['message'][0])
+                self.setResponseCode(202, message="Message passed to notifiers.")
+                self.write("message passed to notifiers")
+            else:
+                self.setResponseCode(400, message="message not specified")
+        else:
+            self.setResponseCode(404, message="invalid path")
         self.finish() # this also writes out an access log line
 
 class Channel(http.HTTPChannel):
