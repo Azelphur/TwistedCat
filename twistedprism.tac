@@ -10,7 +10,7 @@ factories = []
 
 APP_VERSION = "0.0.1"
 APP_NAME = "TwistedPrism"
-APP_URL = "https://github.com/jantman/TwistedCat"
+APP_URL = "http://github.com/jantman/TwistedPrism"
 
 if config.has_key('irc'):
 	# IRC Is enabled, so load the IRC Handler

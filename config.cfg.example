@@ -3,9 +3,9 @@ irc:
     server: irc.example.com
     port: 6667
     ssl: False
-    nick: TwistedCat
-    user: TwistedCat
-    realname: TwistedCat
+    nick: TwistedPrism
+    user: TwistedPrism
+    realname: TwistedPrism
     pass: secret
     lineRate: 1
     channels:

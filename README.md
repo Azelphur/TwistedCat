@@ -1,5 +1,5 @@
-TwistedCat
-==========
+TwistedPrism
+============
 
 TwistedPrism is a Python/Twisted daemon to handle syndication of notifications
 from and to multiple sources and destinations (mainly chat services). It's
@@ -18,7 +18,7 @@ socket, or echoing to `netcat` in a shell script.
 At this time, the design sends all incoming traffic to all outputs and relies
 on the consumers to filter or highlight as desired, based on the contents of
 the message. If totally separate flows are desired, multiple instances of
-TwistedCat can be spun up on different ports.
+TwistedPrism can be spun up on different ports.
 
 Inputs
 ------
@@ -36,8 +36,8 @@ Usage - Server
 environment. Remove any sections you don't want. Each client section
 supports multiple accounts, meaning you can have the bot on multiple IRC
 networks, or multiple XMPP accounts.
-# Start the bot with `twistd -y twistedcat.tac`
-# If you have any issues, keep it in the foreground with `twistd -n -y twistedcat.tac`
+# Start the bot with `twistd -y twistedprism.tac`
+# If you have any issues, keep it in the foreground with `twistd -n -y twistedprism.tac`
 
 Usage - Clients
 ---------------
