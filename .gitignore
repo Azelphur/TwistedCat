@@ -36,3 +36,4 @@ nosetests.xml
 
 # config file
 config.cfg
+twistd.pid
