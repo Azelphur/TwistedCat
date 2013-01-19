@@ -38,6 +38,12 @@ class IRCBot(irc.IRCClient):
         return self.factory.config['lineRate']
     lineRate = property(_get_lineRate)
 
++   def _get_heartbeatInterval(self):
++       if 'heartbeatInterval' in self.factory.config:
++           return self.factory.config['heartbeatInterval']
++       return 120.0 # this is the default per API docs
++   heartbeatInterval = property(_get_heartbeatInterval)
+
     def signedOn(self):
     	for channel in self.factory.config['channels']:
 		if self.factory.config['channels'][channel] and self.factory.config['channels'][channel].has_key('key'):
