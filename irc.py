@@ -1,6 +1,7 @@
 from twisted.words.protocols import irc
 from twisted.internet import protocol, ssl
 import platform, socket, getpass
+from twisted.internet.error import ConnectionLost
 
 class IRCBot(irc.IRCClient):
     
@@ -50,9 +51,9 @@ class IRCBot(irc.IRCClient):
         		self.join(channel, self.factory.config['channels'][channel]['key'])
 		else:
         		self.join(channel)
-
         print "Signed on as %s." % (self.nickname,)
 	self.factory.irc = self
+        print dir(self)
 
     def joined(self, channel):
         print "Joined %s." % (channel,)
@@ -77,6 +78,27 @@ class IRCBot(irc.IRCClient):
             msg = self.factory.usage_msg
             self.msg(channel, msg)
 
+    def _onError(self, failure):
+        print 'Failure %s at %s' % (failure, self.__class__.__name__)
+        error = failure.trap(ConnectionLost)
+        if error == ConnectionLost:
+            # Do some beautiful things
+            print 'Connection is lost. I want to reconnect NOW'
+            print failure
+        return failure
+
+    def clientConnectionLost(self, connector, reason):
+        print "client connection lost. reason: %s" % reason
+
+    def connectionLost(self, reason):
+        print "connection lost. reason: %s" % reason
+
+    def clientConnectionFailed(self, connector, reason):
+        print "connection failed. reason: %s" % reason
+
+    def irc_PING(self, prefix, params):
+        print "IRC ping. prefix: %s params %s" % (prefix, params)
+
 class IRCBotFactory(protocol.ClientFactory):
     protocol = IRCBot
     usage_msg = None
@@ -89,6 +111,7 @@ class IRCBotFactory(protocol.ClientFactory):
         hostname = socket.gethostbyname(platform.uname()[1])
         username = getpass.getuser()
         self.usage_msg = "%s v%s <%s> (running on %s (%s) as %s)" % (APP_NAME, APP_VERSION, APP_URL, hostname, platform.uname()[1], username)
+        print dir(self)
 
     def clientConnectionLost(self, connector, reason):
         print "Lost connection (%s), reconnecting." % (reason,)
