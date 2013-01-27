@@ -12,8 +12,14 @@ class MyHttpRequest(http.Request):
         # self.getHeader(key) returns bytes or NoneType
         # self.getAllHeaders() - returns a dict of all response headers
         if self.path == "/notification/send":
+            channels = None
+            users = None
+            if "channels" in self.args:
+                channels = self.args['channels']
+            if "users" in self.args:
+                users = self.args['users']
             if "message" in self.args:
-                self.channel.factory.message(self.args['message'][0])
+                self.channel.factory.message(self.args['message'][0], channels, users)
                 self.setResponseCode(202, message="Message passed to notifiers.")
                 self.write("message passed to notifiers")
             else:
@@ -38,6 +44,6 @@ class HTTPServerFactory(http.HTTPFactory):
         self.APP_URL = APP_URL
         self.connections = kwargs['factories']
 
-    def message(self, message):
+    def message(self, message, channels = None, users = None):
 	for connection in self.connections:
-		connection.msg(message)
+		connection.msg(message, channels, users)

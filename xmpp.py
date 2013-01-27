@@ -13,7 +13,7 @@ class XMPPBot(MessageProtocol):
     def connectionLost(self, reason):
         print "Disconnected!"
 
-    def msg(self, message):
+    def msg(self, message, channels = None, users = None):
         for dest in self.config['users']:
             print "sending to", dest
             reply = domish.Element((None, "message"))

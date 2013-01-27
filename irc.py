@@ -89,12 +89,15 @@ class IRCBot(irc.IRCClient):
 
     def clientConnectionLost(self, connector, reason):
         print "client connection lost. reason: %s" % reason
+        irc.IRCClient.clientConnectionLost(connector, reason)
 
     def connectionLost(self, reason):
         print "connection lost. reason: %s" % reason
+        irc.IRCClient.connectionLost(reason)
 
     def clientConnectionFailed(self, connector, reason):
         print "connection failed. reason: %s" % reason
+        irc.IRCClient.clientConnectionFailed(connector, reason)
 
     def irc_PING(self, prefix, params):
         print "IRC ping. prefix: %s params %s" % (prefix, params)
@@ -115,14 +118,23 @@ class IRCBotFactory(protocol.ClientFactory):
 
     def clientConnectionLost(self, connector, reason):
         print "Lost connection (%s), reconnecting." % (reason,)
-        connector.connect()
+        protocol.ClientFactory.clientConnectionLost(connector, reason)
 
     def clientConnectionFailed(self, connector, reason):
         print "Could not connect: %s" % (reason,)
+        protocol.ClientFactory.clientConnectionFailed(connector, reason)
 
-    def msg(self, message):
-	for dest in self.config['channels']:
+    def msg(self, message, channels = None, users = None):
+        if channels is None:
+            for dest in self.config['defaule_channels']:
        		self.irc.msg(dest, message)
-        if self.config['users'] is not None:
-            for dest in self.config['users']:
-       		self.irc.msg(dest, message)
+        else:
+            for dest in channels:
+                self.irc.msg(dest, message)
+        if users is None:
+            if self.config['users'] is not None:
+                for dest in self.config['users']:
+                    self.irc.msg(dest, message)
+        else:
+            for dest in self.config['default_users']:
+                self.irc.msg(dest, message)

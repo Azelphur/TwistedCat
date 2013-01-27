@@ -9,7 +9,7 @@ class NetcatProtocol(LineReceiver):
         line = line.rstrip("\r") # Apparently some systems send \r\n, so we're being safe.
         sender = self.transport.getHost()
         print "NetCat received line from %s:%s: '%s'" % (sender.host, sender.port, line,)
-        self.factory.message(line)
+        self.factory.message(line, None, None)
 
 class NetcatFactory(protocol.ServerFactory):
     # Netcat factory to spawn NetcatProtocol instances
@@ -18,6 +18,6 @@ class NetcatFactory(protocol.ServerFactory):
     def __init__(self, **kwargs):
         self.connections = kwargs['factories']
 
-    def message(self, message):
+    def message(self, message, channels = None, users = None):
 	for connection in self.connections:
-		connection.msg(message)
+		connection.msg(message, channels, users)

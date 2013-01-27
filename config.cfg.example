@@ -15,6 +15,11 @@ irc:
       "#muffins":
     users:
       bob:
+      alice:
+    default_channels:
+      "#test":
+    default_users:
+      "alice"
 
 xmpp:
   user@example.com:
