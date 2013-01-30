@@ -19,7 +19,7 @@ irc:
     default_channels:
       "#test":
     default_users:
-      "alice"
+      "alice":
 
 xmpp:
   user@example.com:
@@ -30,3 +30,6 @@ xmpp:
 
 netcat:
   port: 1079
+
+http:
+  port: 8080

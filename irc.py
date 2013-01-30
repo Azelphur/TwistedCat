@@ -128,17 +128,20 @@ class IRCBotFactory(protocol.ClientFactory):
     def msg(self, message, channels = None, users = None):
         if self.VERBOSE:
             print "IRCBotFactory.message(%s, %s, %s)" % (message, channels, users)
-        print self.config
+        # @TODO - for x in y works badly on strings. we need to somehow make sure these are treated as lists.
         if channels is None:
-            for dest in self.config['default_channels']:
-       		self.irc.msg(dest, message)
-        else:
-            for dest in channels:
-                self.irc.msg(dest, message)
+            channels = self.config['default_channels']
+            if self.VERBOSE:
+                print "IRCBotFactory.msg() setting channels to default"
+        for dest in channels:
+            if self.VERBOSE:
+                print "IRCBotFactory call self.irc.msg(%s, %s)" % (dest, message)
+            self.irc.msg(dest, message)
         if users is None:
-            if self.config['users'] is not None:
-                for dest in self.config['users']:
-                    self.irc.msg(dest, message)
-        else:
-            for dest in self.config['default_users']:
-                self.irc.msg(dest, message)
+            users = self.config['default_users']
+            if self.VERBOSE:
+                print "IRCBotFactory.msg() setting users to default"
+        for dest in users:
+            if self.VERBOSE:
+                print "IRCBotFactory call self.irc.msg(%s, %s)" % (dest, message)
+            self.irc.msg(dest, message)

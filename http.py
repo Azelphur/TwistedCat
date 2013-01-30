@@ -12,6 +12,8 @@ class MyHttpRequest(http.Request):
         # self.getHeader(key) returns bytes or NoneType
         # self.getAllHeaders() - returns a dict of all response headers
         if self.path == "/notification/send":
+            if self.channel.factory.VERBOSE:
+                print "MyHttpRequest.process() self.args: %s" % self.args
             channels = None
             users = None
             if "channels" in self.args:
