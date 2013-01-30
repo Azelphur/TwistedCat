@@ -136,7 +136,7 @@ class IRCBotFactory(protocol.ClientFactory):
         for dest in channels:
             if self.VERBOSE:
                 print "IRCBotFactory call self.irc.msg(%s, %s)" % (dest, message)
-            self.irc.msg(dest, message)
+            self.irc.msg(dest.encode('utf-8'), message.encode('utf-8'))
         if users is None:
             users = self.config['default_users']
             if self.VERBOSE:
@@ -144,4 +144,4 @@ class IRCBotFactory(protocol.ClientFactory):
         for dest in users:
             if self.VERBOSE:
                 print "IRCBotFactory call self.irc.msg(%s, %s)" % (dest, message)
-            self.irc.msg(dest, message)
+            self.irc.msg(dest.encode('utf-8'), message.encode('utf-8'))
