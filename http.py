@@ -1,12 +1,17 @@
 from twisted.internet import protocol
 from twisted.web import server, resource, http
+import json
 
 # from http://nullege.com/codes/show/src%40p%40l%40planes-HEAD%40twisted_serve.py/6/twisted.web.http.HTTPChannel/python
 class MyHttpRequest(http.Request):
   
     def process(self):
         if self.method == "POST":
-	    print "POST from %s to %s: %s" % (self.getClientIP(), self.uri, self.args)
+	    print "POST from %s to %s: %s" % (self.getClientIP(), self.uri, self.content.getvalue())
+            self.args = json.loads(self.content.getvalue())
+            foo = self.args['message']
+            self.args['message'] = []
+            self.args['message'].append(foo)
         # self.responseHeaders type is http_headers.Headers
         self.setHeader("Server", "%s v%s (%s)" % (self.channel.factory.APP_NAME, self.channel.factory.APP_VERSION, self.channel.factory.APP_URL))
         # self.getHeader(key) returns bytes or NoneType
