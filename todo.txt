@@ -1,0 +1,17 @@
+/usr/lib64/python2.7/site-packages/twisted/words/protocols/irc.py
+
+default_send_to:
+    channels:
+    users:
+
+JSON - message, channels[], users[]
+
+GET - message, channel (1, string), user (1, string)
+
+fire-and-forget, errors in log only, 200 unless invalid format/args
+    our main concern is making sure the request from the sender finishes
+    quickly
+
+* init script; should run as a user NOT root
+
+about the name
