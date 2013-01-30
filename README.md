@@ -45,10 +45,17 @@ Usage - Clients
 * Send string data to the server on the port used for netcat
 (netcat.port). `echo "Hello World" | nc localhost 1079`, or the equivalent
 socket code in the language of your choice.
-* Send a string via HTTP to the server. This can be either a HTTP POST of form
-encoded data to `/notification/send`, with the string in a "message" argument,
-or it can be via a GET where the message is URL encoded as a parameter, of the
-form `/notification/send?message=foo%20bar%20baz`. 
+* Send a HTTP GET to the server, /notification/send. The message and,
+optionally, one user and/or one channel to deliver to are encoded in the URL
+in the form `/notification/send?message=your%20message%20here` optionally
+followed by `&users=username` and/or `&channels=%23channel_name`.
+* (recommended) Send a HTTP POST of JSON to the server,
+/notification/send. The JSON is a hash of the following form:
+** "message" - the string message to send
+** "users" (optional) a list of users to send to
+** "channels" (optional) a list of channels to send to
+* Anywhere that user(s) and/or channel(s) are not specified, the defaults from
+the configuration file will be used.
 * At some point I plan on implementing some sort of very basic accidental
 message storm protection - it will likely be a key sent in plaintext with the
 data, checked against a plaintext database (hence why I can't even call it
