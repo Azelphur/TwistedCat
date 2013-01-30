@@ -37,13 +37,16 @@ class HTTPServerFactory(http.HTTPFactory):
     protocol = Channel
     _logDateTimeCall = None
 
-    def __init__(self, config, APP_VERSION, APP_NAME, APP_URL, **kwargs):
+    def __init__(self, config, APP_VERSION, APP_NAME, APP_URL, VERBOSE, **kwargs):
         self.config = config
         self.APP_VERSION = APP_VERSION
         self.APP_NAME = APP_NAME
         self.APP_URL = APP_URL
+        self.VERBOSE = VERBOSE
         self.connections = kwargs['factories']
 
     def message(self, message, channels = None, users = None):
 	for connection in self.connections:
-		connection.msg(message, channels, users)
+            if self.VERBOSE:
+                print "HTTPServerFactory.message(%s, %s, %s)" % (message, channels, users)
+            connection.msg(message, channels, users)

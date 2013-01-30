@@ -106,11 +106,12 @@ class IRCBotFactory(protocol.ClientFactory):
     protocol = IRCBot
     usage_msg = None
 
-    def __init__(self, config, APP_VERSION, APP_NAME, APP_URL):
+    def __init__(self, config, APP_VERSION, APP_NAME, APP_URL, VERBOSE):
         self.config = config
         self.APP_VERSION = APP_VERSION
         self.APP_NAME = APP_NAME
         self.APP_URL = APP_URL
+        self.VERBOSE = VERBOSE
         hostname = socket.gethostbyname(platform.uname()[1])
         username = getpass.getuser()
         self.usage_msg = "%s v%s <%s> (running on %s (%s) as %s)" % (APP_NAME, APP_VERSION, APP_URL, hostname, platform.uname()[1], username)
@@ -125,6 +126,8 @@ class IRCBotFactory(protocol.ClientFactory):
         protocol.ClientFactory.clientConnectionFailed(connector, reason)
 
     def msg(self, message, channels = None, users = None):
+        if self.VERBOSE:
+            print "IRCBotFactory.message(%s, %s, %s)" % (message, channels, users)
         print self.config
         if channels is None:
             for dest in self.config['default_channels']:

@@ -8,6 +8,8 @@ config = yaml.load(open('config.cfg', 'r'))
 application = service.Application("ircnetcat")
 factories = []
 
+VERBOSE = True
+
 APP_VERSION = "0.0.1"
 APP_NAME = "TwistedPrism"
 APP_URL = "http://github.com/jantman/TwistedPrism"
@@ -21,7 +23,7 @@ if config.has_key('irc'):
 		    config['irc'][server]['default_users'] = []
 	    	if not config['irc'][server].has_key('default_channels'):
 		    config['irc'][server]['default_channels'] = []
-		f = IRCBotFactory(config['irc'][server], APP_VERSION, APP_NAME, APP_URL)
+		f = IRCBotFactory(config['irc'][server], APP_VERSION, APP_NAME, APP_URL, VERBOSE)
 		factories.append(f)
 		if config['irc'][server]['ssl']:
 			internet.SSLClient(config['irc'][server]['server'], config['irc'][server]['port'], f, ssl.ClientContextFactory()).setServiceParent(service.IServiceCollection(application))
@@ -31,7 +33,7 @@ if config.has_key('irc'):
 if config.has_key('http'):
 	# HTTP Is enabled, so load the HTTP Handler
 	from http import HTTPServerFactory
-	f = HTTPServerFactory(config['http'], APP_VERSION, APP_NAME, APP_URL, factories=factories)
+	f = HTTPServerFactory(config['http'], APP_VERSION, APP_NAME, APP_URL, VERBOSE, factories=factories)
 	internet.TCPServer(config['http']['port'], f).setServiceParent(service.IServiceCollection(application))
 
 if config.has_key('xmpp'):
@@ -52,5 +54,5 @@ if config.has_key('xmpp'):
 from netcat import NetcatProtocol, NetcatFactory
 
 # Listen for netcat connections
-factory = NetcatFactory(factories=factories)
+factory = NetcatFactory(VERBOSE, factories=factories)
 internet.TCPServer(config['netcat']['port'], factory).setServiceParent(service.IServiceCollection(application))
