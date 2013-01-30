@@ -93,7 +93,7 @@ class IRCBot(irc.IRCClient):
 
     def connectionLost(self, reason):
         print "connection lost. reason: %s" % reason
-        irc.IRCClient.connectionLost(reason)
+        irc.IRCClient.connectionLost(self, reason)
 
     def clientConnectionFailed(self, connector, reason):
         print "connection failed. reason: %s" % reason
@@ -125,8 +125,9 @@ class IRCBotFactory(protocol.ClientFactory):
         protocol.ClientFactory.clientConnectionFailed(connector, reason)
 
     def msg(self, message, channels = None, users = None):
+        print self.config
         if channels is None:
-            for dest in self.config['defaule_channels']:
+            for dest in self.config['default_channels']:
        		self.irc.msg(dest, message)
         else:
             for dest in channels:

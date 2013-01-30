@@ -17,6 +17,10 @@ if config.has_key('irc'):
 	from irc import IRCBotFactory
 	# Connect to IRC
 	for server in config['irc']:
+	    	if not config['irc'][server].has_key('default_users'):
+		    config['irc'][server]['default_users'] = []
+	    	if not config['irc'][server].has_key('default_channels'):
+		    config['irc'][server]['default_channels'] = []
 		f = IRCBotFactory(config['irc'][server], APP_VERSION, APP_NAME, APP_URL)
 		factories.append(f)
 		if config['irc'][server]['ssl']:
