@@ -39,6 +39,10 @@ class IRCBot(irc.IRCClient):
         return self.factory.config['lineRate']
     lineRate = property(_get_lineRate)
 
+    def _sendHeartbeat(self):
+        print "called IRCBot._sendHeartbeat()"
+        irc.IRCClient._sendHeartbeat(self)
+
     def _get_heartbeatInterval(self):
         if 'heartbeatInterval' in self.factory.config:
             return self.factory.config['heartbeatInterval']
@@ -53,7 +57,6 @@ class IRCBot(irc.IRCClient):
         		self.join(channel)
         print "Signed on as %s." % (self.nickname,)
 	self.factory.irc = self
-        print dir(self)
 
     def joined(self, channel):
         print "Joined %s." % (channel,)
@@ -119,7 +122,7 @@ class IRCBotFactory(protocol.ClientFactory):
 
     def clientConnectionLost(self, connector, reason):
         print "Lost connection (%s), reconnecting." % (reason,)
-        protocol.ClientFactory.clientConnectionLost(connector, reason)
+        protocol.ClientFactory.clientConnectionLost(self, connector, reason)
 
     def clientConnectionFailed(self, connector, reason):
         print "Could not connect: %s" % (reason,)
