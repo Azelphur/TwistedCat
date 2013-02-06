@@ -2,7 +2,7 @@ from twisted.application import service, internet
 from twisted.internet import reactor, ssl
 import yaml
 
-config = yaml.load(open('config.cfg', 'r'))
+config = yaml.load(open('config.yaml', 'r'))
 
 # Create the application
 application = service.Application("ircnetcat")

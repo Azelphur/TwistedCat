@@ -36,4 +36,5 @@ nosetests.xml
 
 # config file
 config.cfg
+config.yaml
 twistd.pid
