@@ -2,12 +2,10 @@
     our main concern is making sure the request from the sender finishes
     quickly
 - docs - about the name
-- how to log at differing levels in twistd
 - heartbeat - SSL LB problems?
 - ssl snoop?
 - override methods to get better debugging of parent class?
 - JSON via socket
-- global config vars passed to methods as hashes instead of independent variables
 - examples - socket and http in most languages
 - init script, daemonize
 - auth keys? strings?

@@ -2,6 +2,7 @@ from twisted.words.protocols import irc
 from twisted.internet import protocol, ssl
 import platform, socket, getpass
 from twisted.internet.error import ConnectionLost
+from logging import TwistedPrismLogging as tpl
 
 class IRCBot(irc.IRCClient):
     
@@ -109,15 +110,12 @@ class IRCBotFactory(protocol.ClientFactory):
     protocol = IRCBot
     usage_msg = None
 
-    def __init__(self, config, APP_VERSION, APP_NAME, APP_URL, VERBOSE):
+    def __init__(self, config, GLOBAL_CONF):
         self.config = config
-        self.APP_VERSION = APP_VERSION
-        self.APP_NAME = APP_NAME
-        self.APP_URL = APP_URL
-        self.VERBOSE = VERBOSE
+        self.GLOBAL_CONF = GLOBAL_CONF
         hostname = socket.gethostbyname(platform.uname()[1])
         username = getpass.getuser()
-        self.usage_msg = "%s v%s <%s> (running on %s (%s) as %s)" % (APP_NAME, APP_VERSION, APP_URL, hostname, platform.uname()[1], username)
+        self.usage_msg = "%s v%s <%s> (running on %s (%s) as %s)" % (GLOBAL_CONF['APP_NAME'], GLOBAL_CONF['APP_VERSION'], GLOBAL_CONF['APP_URL'], hostname, platform.uname()[1], username)
         print dir(self)
 
     def clientConnectionLost(self, connector, reason):
@@ -126,25 +124,25 @@ class IRCBotFactory(protocol.ClientFactory):
 
     def clientConnectionFailed(self, connector, reason):
         print "Could not connect: %s" % (reason,)
-        protocol.ClientFactory.clientConnectionFailed(connector, reason)
+        protocol.ClientFactory.clientConnectionFailed(self, self, reason)
 
     def msg(self, message, channels = None, users = None):
-        if self.VERBOSE:
+        if self.GLOBAL_CONF['logging']['verbosity'] >= tpl.L_DEBUG:
             print "IRCBotFactory.message(%s, %s, %s)" % (message, channels, users)
         # @TODO - for x in y works badly on strings. we need to somehow make sure these are treated as lists.
         if channels is None:
             channels = self.config['default_channels']
-            if self.VERBOSE:
+            if self.GLOBAL_CONF['logging']['verbosity'] >= tpl.L_DEBUG:
                 print "IRCBotFactory.msg() setting channels to default"
         for dest in channels:
-            if self.VERBOSE:
+            if self.GLOBAL_CONF['logging']['verbosity'] >= tpl.L_DEBUG:
                 print "IRCBotFactory call self.irc.msg(%s, %s)" % (dest, message)
             self.irc.msg(dest.encode('utf-8'), message.encode('utf-8'))
         if users is None:
             users = self.config['default_users']
-            if self.VERBOSE:
+            if self.GLOBAL_CONF['logging']['verbosity'] >= tpl.L_DEBUG:
                 print "IRCBotFactory.msg() setting users to default"
         for dest in users:
-            if self.VERBOSE:
+            if self.GLOBAL_CONF['logging']['verbosity'] >= tpl.L_DEBUG:
                 print "IRCBotFactory call self.irc.msg(%s, %s)" % (dest, message)
             self.irc.msg(dest.encode('utf-8'), message.encode('utf-8'))

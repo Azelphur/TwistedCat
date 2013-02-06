@@ -75,6 +75,16 @@ for twistedprism.tac. This will (perhaps with some modifications for your
 system or distro) allow TwistedPrism to run through twistd as a standard
 daemon.
 
+Configuration File
+------------------
+The daemon is configured by a simple YAML file. 
+
+* "logging:" this hash configures the logging
+** "verbosity: X" where X is an integer in the following set:
+*** 1 - normal logging. Log only critical issues.
+*** 2 - verbose logging. Log major events in program flow.
+*** 3 - debug logging. log everything. and we mean everything.
+
 Acknowledgements
 ----------------
 

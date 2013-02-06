@@ -1,3 +1,6 @@
+logging:
+  verbosity: 2
+
 irc:
   Example-IRC:
     server: irc.example.com

@@ -8,11 +8,16 @@ config = yaml.load(open('config.cfg', 'r'))
 application = service.Application("ircnetcat")
 factories = []
 
-VERBOSE = True
+# for global config
+GLOBALCONFIG = {}
 
-APP_VERSION = "0.0.1"
-APP_NAME = "TwistedPrism"
-APP_URL = "http://github.com/jantman/TwistedPrism"
+GLOBALCONFIG['APP_VERSION'] = "0.0.1"
+GLOBALCONFIG['APP_NAME'] = "TwistedPrism"
+GLOBALCONFIG['APP_URL'] = "http://github.com/jantman/TwistedPrism"
+GLOBALCONFIG['logging'] = config['logging']
+
+if not config['logging'].has_key('verbosity'):
+   config['logging']['verbosity'] = 1
 
 if config.has_key('irc'):
 	# IRC Is enabled, so load the IRC Handler
@@ -23,7 +28,7 @@ if config.has_key('irc'):
 		    config['irc'][server]['default_users'] = []
 	    	if not config['irc'][server].has_key('default_channels'):
 		    config['irc'][server]['default_channels'] = []
-		f = IRCBotFactory(config['irc'][server], APP_VERSION, APP_NAME, APP_URL, VERBOSE)
+		f = IRCBotFactory(config['irc'][server], GLOBALCONFIG)
 		factories.append(f)
 		if config['irc'][server]['ssl']:
 			internet.SSLClient(config['irc'][server]['server'], config['irc'][server]['port'], f, ssl.ClientContextFactory()).setServiceParent(service.IServiceCollection(application))
@@ -33,7 +38,7 @@ if config.has_key('irc'):
 if config.has_key('http'):
 	# HTTP Is enabled, so load the HTTP Handler
 	from http import HTTPServerFactory
-	f = HTTPServerFactory(config['http'], APP_VERSION, APP_NAME, APP_URL, VERBOSE, factories=factories)
+	f = HTTPServerFactory(config['http'], GLOBALCONFIG, factories=factories)
 	internet.TCPServer(config['http']['port'], f).setServiceParent(service.IServiceCollection(application))
 
 if config.has_key('xmpp'):
@@ -54,5 +59,5 @@ if config.has_key('xmpp'):
 from netcat import NetcatProtocol, NetcatFactory
 
 # Listen for netcat connections
-factory = NetcatFactory(VERBOSE, factories=factories)
+factory = NetcatFactory(GLOBALCONFIG, factories=factories)
 internet.TCPServer(config['netcat']['port'], factory).setServiceParent(service.IServiceCollection(application))
