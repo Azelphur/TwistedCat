@@ -9,4 +9,3 @@
 - examples - socket and http in most languages
 - init script, daemonize
 - auth keys? strings?
-- gevent???
