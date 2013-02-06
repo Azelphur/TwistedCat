@@ -1,10 +1,10 @@
+TwistedPrism examples:
+
+wget HTTP GET, simple message to all default channels/users:
 wget -O - "http://localhost:8080/notification/send?message=foobarbaz"
 
-sleep 3
-
+wget HTTP GET, simple message to one user and one channel
 wget -O - "http://localhost:8080/notification/send?message=foobarbaz&users=jantman&channels=%23jantmantwo"
 
-sleep 3
-
+curl HTTP POST of JSON, full control of list of users and channels
 curl -v -H "Accept: application/json" -H "Content-type: application/json" -X POST -d '{"users":["jantman"],"channels":["#jantman","#jantmantwo"],"message":"testing from JSON"}' http://localhost:8080/notification/send
-
