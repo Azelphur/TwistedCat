@@ -85,6 +85,13 @@ The daemon is configured by a simple YAML file.
 *** 2 - verbose logging. Log major events in program flow.
 *** 3 - debug logging. log everything. and we mean everything.
 
+Known Issues
+------------
+* The IRC heartbeat functionality wasn't implemented in Twisted until
+11.1.0. If you're on an older OS, be aware that without it, connections to
+certain IRC servers (specifically those behind load balancers and using SSL)
+may drop and reconnect at regular intervals.
+
 Acknowledgements
 ----------------
 

@@ -2,9 +2,6 @@
     our main concern is making sure the request from the sender finishes
     quickly
 - docs - about the name
-- heartbeat - SSL LB problems?
-- ssl snoop?
-- override methods to get better debugging of parent class?
 - JSON via socket
 - examples - socket and http in most languages
 - init script, daemonize
