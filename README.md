@@ -4,9 +4,9 @@ TwistedPrism
 TwistedPrism is a Python/Twisted daemon to handle syndication of notifications
 from and to multiple sources and destinations (mainly chat services). It's
 intended to be a funnel for your various notifications into an IRC channel or
-XMPP chat. It currently listens for either netcat (string-over-a-socket) or
-HTTP (GET url params or form-encoded POST data) requests, and relays a simple
-string from the input to an output (one or more IRC or XMPP channels/chats). 
+XMPP chat. It currently listens for either netcat (socket) or HTTP (GET url
+params or form-encoded POST data) requests, and relays a simple string from
+the input to an output (one or more IRC or XMPP channels/chats). 
 
 This project is intended to provide an easy way to take simple string messages
 from "things" that you want to know about (monitoring system alerts, tickets
