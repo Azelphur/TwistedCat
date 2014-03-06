@@ -8,6 +8,7 @@ class NetcatProtocol(LineReceiver):
 	# Netcat message recieved
         line = line.rstrip("\r") # Apparently some systems send \r\n, so we're being safe.
         self.factory.message(line)
+        self.transport.loseConnection()
 
 class NetcatFactory(protocol.ServerFactory):
     # Netcat factory to spawn NetcatProtocol instances
