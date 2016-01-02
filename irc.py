@@ -25,6 +25,8 @@ class IRCBot(irc.IRCClient):
     versionName = "TwistedCat"
 
     def signedOn(self):
+        if 'oper' in self.factory.config:
+            self.sendLine('oper '+self.factory.config['oper']['user']+' '+self.factory.config['oper']['pass'])
         for channel in self.factory.config['channels']:
             if self.factory.config['channels'][channel] and self.factory.config['channels'][channel].has_key('key'):
                 self.join(channel, self.factory.config['channels'][channel]['key'])
