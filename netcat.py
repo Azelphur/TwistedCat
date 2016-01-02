@@ -5,7 +5,7 @@ class NetcatProtocol(LineReceiver):
     delimiter = "\n"
 
     def lineReceived(self, line):
-	# Netcat message recieved
+        # Netcat message recieved
         line = line.rstrip("\r") # Apparently some systems send \r\n, so we're being safe.
         self.factory.message(line)
         self.transport.loseConnection()
@@ -18,5 +18,5 @@ class NetcatFactory(protocol.ServerFactory):
         self.connections = kwargs['factories']
 
     def message(self, message):
-	for connection in self.connections:
-		connection.msg(message)
+        for connection in self.connections:
+            connection.msg(message)

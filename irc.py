@@ -25,14 +25,14 @@ class IRCBot(irc.IRCClient):
     versionName = "TwistedCat"
 
     def signedOn(self):
-    	for channel in self.factory.config['channels']:
-		if self.factory.config['channels'][channel] and self.factory.config['channels'][channel].has_key('key'):
-        		self.join(channel, self.factory.config['channels'][channel]['key'])
-		else:
-        		self.join(channel)
+        for channel in self.factory.config['channels']:
+            if self.factory.config['channels'][channel] and self.factory.config['channels'][channel].has_key('key'):
+                self.join(channel, self.factory.config['channels'][channel]['key'])
+            else:
+                self.join(channel)
 
         print "Signed on as %s." % (self.nickname,)
-	self.factory.irc = self
+        self.factory.irc = self
 
     def joined(self, channel):
         print "Joined %s." % (channel,)
@@ -51,7 +51,12 @@ class IRCBotFactory(protocol.ClientFactory):
         print "Could not connect: %s" % (reason,)
 
     def msg(self, message):
-	for dest in self.config['channels']:
-       		self.irc.msg(dest, message)
-	for dest in self.config['users']:
-       		self.irc.msg(dest, message)
+        split = message.split()
+        if split[0] in self.config['channels'] or split[0] in self.config['users']:
+            print "Sending message to", split[0]
+            self.irc.msg(split[0], message[message.find(' ')+1:])
+        else:
+            for dest in self.config['channels']:
+                self.irc.msg(dest, message)
+            for dest in self.config['users']:
+                self.irc.msg(dest, message)

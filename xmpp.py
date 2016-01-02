@@ -13,11 +13,17 @@ class XMPPBot(MessageProtocol):
     def connectionLost(self, reason):
         print "Disconnected!"
 
+    def sendMsg(self, dest, message):
+        reply = domish.Element((None, "message"))
+        reply["to"] = dest
+        reply["type"] = 'chat'
+        reply.addElement("body", content=message)
+        self.send(reply)
+
     def msg(self, message):
-        for dest in self.config['users']:
-            print "sending to", dest
-            reply = domish.Element((None, "message"))
-            reply["to"] = dest
-            reply["type"] = 'chat'
-            reply.addElement("body", content=message)
-            self.send(reply)
+        split = message.split()
+        if split[0].lower() in self.config['users']:
+            self.sendMsg(split[0], message[message.find(' ')+1:])
+        else:
+            for dest in self.config['users']:
+                self.sendMsg(dest, message)
